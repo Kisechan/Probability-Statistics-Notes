@@ -383,12 +383,9 @@ $
 
 == $chi^2$ 分布
 
-#figure(
-  image("assets/chi-square.svg", width: 20em),
-  caption: [
-    $chi^2$ 分布 #link("https://en.wikipedia.org/wiki/Chi-squared_distribution")[来源 Wikipedia]
-    ]
-)
+#figure(image("assets/chi-square.svg", width: 20em), caption: [
+  $chi^2$ 分布 #link("https://en.wikipedia.org/wiki/Chi-squared_distribution")[来源 Wikipedia]
+])
 
 #definition(title: $chi^2$ + "分布")[
   $X_1, X_2, ..., X_k$ 满足 $X_k ~ cal(N)(0,1)$，则
@@ -411,12 +408,9 @@ $
 
 == $t$ 分布
 
-#figure(
-  image("assets/student_t.svg", width: 20em),
-  caption: [
-    $t$ 分布 #link("https://en.wikipedia.org/wiki/Student%27s_t-distribution")[来源 Wikipedia]
-    ]
-)
+#figure(image("assets/student_t.svg", width: 20em), caption: [
+  $t$ 分布 #link("https://en.wikipedia.org/wiki/Student%27s_t-distribution")[来源 Wikipedia]
+])
 
 #definition(title: $t$ + "分布")[
   若：
@@ -451,12 +445,9 @@ $
 
 == $F$ 分布
 
-#figure(
-  image("assets/f-distribution.svg", width: 20em),
-  caption: [
-    $F$ 分布 #link("https://en.wikipedia.org/wiki/F-distribution")[来源 Wikipedia]
-    ]
-)
+#figure(image("assets/f-distribution.svg", width: 20em), caption: [
+  $F$ 分布 #link("https://en.wikipedia.org/wiki/F-distribution")[来源 Wikipedia]
+])
 
 #definition(title: $F$ + "分布")[
   若：
@@ -476,3 +467,148 @@ $
 
 ] <definition>
 
+== 点估计法
+
+=== 矩估计法
+
+核心思想：令
+$
+  bb(E)X^t (theta) = macron(X)_n^t
+$
+求解出矩估计量 $hat(theta) = f(macron(x))$。
+
+
+=== 最大似然估计法
+
+核心思想：令
+$
+  L(theta) = product p(x_i; theta) =
+  cases(
+    product P{X=x_i; theta} & "，离散型随机变量",
+    product f(x_i; theta) & "，连续型随机变量",
+  )
+$
+取对数后求其驻点：
+$
+  (dif ln L(theta))/(dif theta) = sum (p'(x_i; theta))/(p(x_i; theta)) = 0
+$
+
+如果有多个待估参数，例如正态分布的 $mu$ 和 $sigma^2$，则需要求它们的偏导，组成一个方程组：
+$
+  cases(
+    (partial ln L(theta_i))/(partial theta_1) & = 0,
+    (partial ln L(theta_i))/(partial theta_2) & = 0,
+    & dots.v,
+    (partial ln L(theta_i))/(partial theta_n) & = 0,
+  )
+$
+更严谨的话还要检查一下 Hessian 矩阵。
+
+当似然函数满足以下条件时，参数的最大似然估计值可能是 $max{X_i}$ 或 $min{X_i}$：
+- *是单调函数*
+- $x_i$ *依赖于待估计的参数*
+
+例如，均匀分布的观察值 $X_i$ 必须处在某个和 $theta$ 相关的区间内时，会涉及到这种情况。
+
+== 估计量评选标准
+
+=== 无偏性
+
+若 $bb(E) hat(theta) = theta$，则称 $hat(theta)$ 为 $theta$ 的无偏估计量。
+
+#lemma[
+  一些无偏估计量：
+  - $bb(E) macron(X)_n = mu$
+  - $bb(E) S^2 = sigma^2$ (若样本方差 $S^2$ 计算使用的是无偏公式，即分母为 $n-1$)
+] <lemma>
+
+=== 有效性
+
+若 $hat(theta)_i$ 和 $hat(theta)_j$ 都是 $theta$ 的无偏估计量，且
+$
+  "D" hat(theta)_i <= "D" hat(theta)_j
+$
+则称 $hat(theta)_i$ 比 $hat(theta)_j$ 更有效。
+
+// == 一致性 ==
+== 一致性
+
+当 $n -> +infinity$ 时，估计量 $hat(theta)_n$ 依概率收敛于 $theta$，即
+$
+  forall epsilon > 0, quad lim_(n->+infinity) P{ abs(hat(theta)_n - theta) < epsilon } = 1
+$
+则称 $hat(theta)_n$ 为 $theta$ 的一致估计量。
+
+== 区间估计
+
+#caution-box()[
+  注意分位点是一个*坐标*，而不是长度。
+]
+
+=== 求 $mu$
+
+- *若方差已知*，置信水平为 $1-alpha$ 时，枢轴量 $(macron(X) - mu)/(sigma / sqrt(n)) ~ cal(N)(0,1)$ 的值需要在 $(-u_(alpha/2), u_(alpha/2))$ 区间内。解出 $mu$ 的置信区间为：
+  $
+    mu in (macron(X) plus.minus u_(alpha/2) sigma/sqrt(n))
+  $
+- *若方差未知*，置信水平为 $1-alpha$ 时，枢轴量 $(macron(X) - mu)/(S / sqrt(n)) ~ t(n-1)$ 的值需要在 $(-t_(alpha/2)(n-1), t_(alpha/2)(n-1))$ 区间内。解出 $mu$ 的置信区间为：
+  $
+    mu in (macron(X) plus.minus t_(alpha/2)(n-1) S/sqrt(n))
+  $
+
+=== 求 $sigma^2$
+
+- *若期望未知*，置信水平为 $1-alpha$ 时，枢轴量 $((n-1)S^2)/sigma^2 ~ chi^2(n-1)$ 的值需要在 $(chi^2_(1-alpha/2)(n-1), chi^2_(alpha/2)(n-1))$ 区间内。解出 $sigma^2$ 的置信区间为：
+  $
+    sigma^2 in ( ((n-1)S^2)/(chi^2_(alpha/2)(n-1)), ((n-1)S^2)/(chi^2_(1-alpha/2)(n-1)))
+  $
+- *若期望已知*，枢轴量为 $(sum(X_i - mu)^2)/sigma^2 ~ chi^2(n)$，则置信区间为：
+  $
+    sigma^2 in (sum(X_i - mu)^2/(chi^2_(alpha/2)(n)), (sum(X_i - mu)^2)/(chi^2_(1-alpha/2)(n)))
+  $
+
+求单侧置信区间只需要把 $alpha/2$ 变成 $alpha$ 即可。
+
+== 假设检验
+
+假设检验的结果可能犯两类错误：
+- *第一类错误* (弃真)：当原假设 $H_0$ 为真时，却拒绝 $H_0$。犯此类错误的概率以 $alpha$ 表示：
+  $
+    P{"拒绝" H_0 | H_0 "为真"} = alpha
+  $
+- *第二类错误* (取伪)：当原假设 $H_0$ 为假时，却接受 $H_0$。犯此类错误的概率以 $beta$ 表示：
+  $
+    P{"接受" H_0 | H_0 "为假"} = beta
+  $
+
+#table(
+  columns: (auto, 1fr, 1fr),
+  align: center + horizon,
+  stroke: (
+    top: none,
+    bottom: none,
+    left: none,
+    right: none,
+    ),
+  [], [*$H_0$ 为真*], [*$H_0$ 为假*],
+  [*接受*], [正确], [第二类错误],
+  [*拒绝*], [第一类错误], [正确],
+)
+
+=== 检验 $mu$
+
++ *提出假设*：$H_0: mu = mu_0$，$H_1: mu != mu_0$。
++ *选择检验统计量*：
+  - *方差已知*：选 $((macron(X) - mu_0)/(sigma/sqrt(n))) ~ cal(N)(0,1)$，进行 *U 检验*。
+  - *方差未知*：选 $((macron(X) - mu_0)/(S/sqrt(n))) ~ t(n-1)$，进行 *T 检验*。
++ *根据显著性水平 $alpha$ 求出拒绝域*：
+  - *U 检验*：拒绝域 $W = (-infinity, -u_(alpha/2)) union (u_(alpha/2), +infinity)$。
+  - *T 检验*：拒绝域 $W = (-infinity, -t_(alpha/2)(n-1)) union (t_(alpha/2)(n-1), +infinity)$。
++ *做出检验*：将样本值代入检验统计量，计算出结果。若结果落在拒绝域 $W$ 内，则拒绝 $H_0$；否则接受 $H_0$。
+
+=== 检验 $sigma^2$
+
++ *提出假设*：$H_0: sigma^2 = sigma_0^2$，$H_1: sigma^2 != sigma_0^2$。
++ *选择检验统计量*：$(((n-1)S^2)/sigma_0^2) ~ chi^2(n-1)$，进行 *$chi^2$ 检验*。
++ *求拒绝域*：$W = (0, chi^2_(1-alpha/2)(n-1)) union (chi^2_(alpha/2)(n-1), +infinity)$。
++ *做出检验*：将样本值代入检验统计量，若结果落在拒绝域 $W$ 内，则拒绝 $H_0$；否则接受 $H_0$。
