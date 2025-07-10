@@ -1,0 +1,10 @@
+# Typst generated files
+*.pdf
+*.log
+.typst-cache/
+
+# Operating System files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+.localized
