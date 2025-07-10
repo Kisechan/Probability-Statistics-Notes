@@ -37,12 +37,7 @@
   ),
 
   // 表头
-  [分布名称],
-  [概率密度函数],
-  [分布函数],
-  [期望],
-  [方差],
-  [参数说明],
+  [分布名称], [概率密度函数], [分布函数], [期望], [方差], [参数说明],
 
   // 均匀分布
   [均匀分布 $U(a, b)$],
@@ -61,7 +56,7 @@
   [$lambda > 0$],
 
   // 正态分布
-  [正态分布 $N(mu, sigma^2)$],
+  [正态分布 $cal(N)(mu, sigma^2)$],
   [$f(x) = 1/(sqrt(2 pi sigma^2)) e^(-((x - mu)^2)/(2 sigma^2))$],
   [],
   [$mu$],
@@ -85,24 +80,19 @@
   ),
 
   // 表头
-  [分布名称],
-  [概率质量函数],
-  [分布函数],
-  [期望],
-  [方差],
-  [参数说明],
+  [分布名称], [概率质量函数], [分布函数], [期望], [方差], [参数说明],
 
   // 伯努利分布
   [伯努利分布],
   [$P(X = i) = cases(
-    p & " " i = 1,
-    1-p & " " i = 0,
-  )$],
+      p & " " i = 1,
+      1-p & " " i = 0,
+    )$],
   [$F(x) = cases(
-    0 & " " x < 0,
-    1-p & " " 0 <= x < 1,
-    1 & " " x >= 1
-  )$],
+      0 & " " x < 0,
+      1-p & " " 0 <= x < 1,
+      1 & " " x >= 1
+    )$],
   [$p$],
   [$p(1 - p)$],
   [$0 < p < 1$],
@@ -132,11 +122,69 @@
   [$lambda > 0$],
 )
 
-二项分布的众数为 $floor.l (n+1) p floor.r$
+#theorem(title: "二项分布的众数")[
+  二项分布的众数为 $floor.l (n+1) p floor.r$。
+] <theorem>
 
-二项分布的极限情况就是泊松分布，此时，
+#theorem(title: "二项分布的极端情况")[
+  二项分布的极限情况就是泊松分布，此时，
 
-- $n arrow.r infinity$
-- $p arrow.r 0$
-- $n p arrow.r lambda$
+  - $n arrow.r infinity$
+  - $p arrow.r 0$
+  - $n p arrow.r lambda$
 
+] <theorem>
+
+== 标准正态分布
+
+#lemma(title: "Gauss 积分")[
+  $
+    integral^(-infinity)_(+infinity) 1 / (sqrt(2 pi)) e^(-x^2/2) serif(d)x = 1
+  $
+] <lemma>
+
+#definition(title: "标准正态分布")[
+  #align(center)[
+    $
+                                 若 X & ~ cal(N)(mu, sigma^2) \
+      arrow.r.double (X - mu) / sigma & ~ cal(N)(0, 1)
+    $
+  ]
+  标准正态分布满足：
+  - $mu = 0$
+  - $sigma = 1$
+] <definition>
+
+标准正态分布的概率密度函数为：
+$
+  f(x) = 1 / (sqrt(2 pi)) e^(-x^2/2)
+$
+
+且，
+
+$
+  bb(E) X^2 = 1
+$
+
+#theorem()[
+  若 $X, Y ~ cal(N)(mu_i, sigma_i)$ 且相互独立，则有：
+
+  - $bb(E)(X Y) = "Cov"(X, Y) + mu_X mu_Y = mu_X mu_Y$
+  - $D(X Y) = mu_X^2 sigma_Y^2 + mu_Y^2 sigma_X^2 + sigma_X^2 sigma_Y^2$
+  - $X Y$ 一般*不再是正态分布*
+] <theorem>
+
+== 随机变量函数的分布
+
+#theorem(title: "随机变量函数的分布")[
+  如果 $x = g(y)$ 且 $f(x)$ 为 $X$ 的 PDF，且 $g(y)$ 单调，则
+$
+  f_Y (y) = f_X (g(y)) abs(g'(y))
+$
+
+
+] <theorem>
+
+#warning-box()[
+  使用本公式时注意变量的区间。
+]
