@@ -186,7 +186,7 @@ $
 ] <theorem>
 
 #warning-box()[
-  使用本公式时注意变量的区间。
+  使用本公式时注意变量的定义区间。
 ]
 
 == 二维正态分布
@@ -327,3 +327,36 @@ $
   + $"D"(X|Y) = "D"(Y|X) = 0$
 
 ] <theorem>
+
+== 不等式与极限定理
+
+=== Chebyshev 不等式
+
+#theorem(title: "Chebyshev 不等式")[
+  $
+    P(abs(X - mu) >= epsilon) < sigma^2 / epsilon^2
+  $
+] <theorem>
+
+=== 大数定律
+
+#theorem(title: "大数定律")[
+  记 $macron(X)_n$ 为样本均值，$forall epsilon > 0$，有
+  $
+    lim_(n -> +infinity) P{ abs(macron(X)_n - mu) < epsilon } = 1
+  $
+  也就是说，$n -> +infinity$ 时，样本均值依概率收敛于数学期望。
+] <theorem>
+
+=== 中心极限定理
+
+#theorem(title: "中心极限定理")[
+  记 $macron(X)_n$ 为样本均值，$Z_n$ 为其标准化形式。
+  $
+    Z_n = (macron(X)_n - bb(E)[macron(X)_n]) / ("D"[macron(X)_n]) = (macron(X)_n - mu) / (sigma / sqrt(n)) ~ cal(N)(0, 1)
+  $
+  也就是说，不管 $X_i$ 服从什么分布，其样本均值的标准化形式 $Z_n$ 都近似服从标准正态分布，其非标准化形式满足：
+
+  $ (macron(X)_n dot~ cal(N)(mu, sigma^2/n)) $
+]
+
