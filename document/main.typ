@@ -10,6 +10,7 @@
   date: datetime.today(),
   maketitle: true,
   makeoutline: true,
+  first-line-indent: auto,
   // theme: "dark",
   // media: "screen",
 )
@@ -212,7 +213,7 @@ $
 
 == 二维随机变量函数的分布
 
-注意*这里涉及到的都是 CDF*
+注意*这里涉及到的都是 CDF*。
 
 === $Z = X+Y$ 型
 
@@ -359,4 +360,119 @@ $
 
   $ (macron(X)_n dot~ cal(N)(mu, sigma^2/n)) $
 ]
+
+= 数理统计
+
+== 正态总体
+
+#lemma(title: "Fisher's Lemma")[
+  $X_n$ 是从正态总体 $cal(N)(mu, sigma^2)$ 中抽取的一群样本，则样本均值和样本方差满足以下说法：
+
+  + $macron(X)_n ~ cal(N)(mu, sigma^2/n)$
+    - $bb(E) macron(X)_n = mu$
+    - $D macron(X)_n = sigma^2/n$
+
+  + $((n-1)S^2)/sigma^2 ~ chi^2(n-1)$
+    - 注意，$S^2$ 计算是使用的 $macron(X)$。
+    - 如果使用均值 $mu$ 计算方差，*则不会损失自由度*，它会遵从 $chi^2(n)$ 分布。
+    - $bb(E)S^2 = sigma^2$
+    - $D S^2 = (2sigma^4)/(n-1)$
+
+  + $S^2$ 和 $macron(X)$ 是*相互独立的*。
+]
+
+== $chi^2$ 分布
+
+#figure(
+  image("assets/chi-square.svg", width: 20em),
+  caption: [
+    $chi^2$ 分布 #link("https://en.wikipedia.org/wiki/Chi-squared_distribution")[来源 Wikipedia]
+    ]
+)
+
+#definition(title: $chi^2$ + "分布")[
+  $X_1, X_2, ..., X_k$ 满足 $X_k ~ cal(N)(0,1)$，则
+  $
+    Z = sum X_i^2 ~ chi^2(k)
+  $
+] <definition>
+
+#theorem(title: $chi^2$ + "分布的期望和方差")[
+  - $bb(E)Z = k$
+  - $D Z = 2k$
+] <theorem>
+
+#theorem(title: $chi^2$ + "分布的可加性")[
+  若 $Z_i$ 独立，则满足可加性：
+  $
+    sum Z_i ~ chi^2(sum k_i)
+  $
+] <theorem>
+
+== $t$ 分布
+
+#figure(
+  image("assets/student_t.svg", width: 20em),
+  caption: [
+    $t$ 分布 #link("https://en.wikipedia.org/wiki/Student%27s_t-distribution")[来源 Wikipedia]
+    ]
+)
+
+#definition(title: $t$ + "分布")[
+  若：
+  + $Z ~ cal(N)(0,1)$
+  + $U ~ chi^2(k)$
+  + 二者相互独立
+
+  则，
+  $
+    T = Z / sqrt(U/k) ~ t(k)
+  $
+] <definition>
+
+#theorem(title: $t$ + "分布的可加性")[
+  - $bb(E)T = 0, "如果" k > 1$
+  - $D T = k/(k-2), "如果" k > 2$
+] <theorem>
+
+$k -> +infinity$ 时，$t$ 分布收敛于 $cal(N)(0,1)$。
+
+对于从正态总体中抽取的样本 $X_i$，有
+$
+  (macron(X)_n - mu)/(sigma / sqrt(n)) ~ cal(N)(0,1) \
+  ((n-1)S^2)/sigma^2 ~ chi^2(n-1)
+$
+则，
+$
+  T & = (macron(X)_n - mu) / (S/sqrt(n))                                               \
+    & = (((X)n - mu) / (sigma/sqrt(n))) / (sqrt(S^2/sigma^2))                          \
+    & = (((macron(X)_n - mu)/(sigma/sqrt(n)))) / ((sqrt((chi^2(n-1))/(n-1)))) ~ t(n-1)
+$
+
+== $F$ 分布
+
+#figure(
+  image("assets/f-distribution.svg", width: 20em),
+  caption: [
+    $F$ 分布 #link("https://en.wikipedia.org/wiki/F-distribution")[来源 Wikipedia]
+    ]
+)
+
+#definition(title: $F$ + "分布")[
+  若：
+  - $U ~ chi^2(d_1)$
+  - $V ~ chi^2(d_2)$
+  - 二者相互独立
+
+  则，
+  $
+    F = (U/d_1)/(V/d_2) ~ F(d_1, d_2)
+  $
+  且，
+  $
+    "如果" T ~ t(k)"，则"
+    T^2 ~ F(1, k)
+  $
+
+] <definition>
 
