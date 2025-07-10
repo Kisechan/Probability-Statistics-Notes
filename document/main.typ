@@ -6,7 +6,7 @@
   title: "概率论与数理统计",
   author: "Kisechan",
   subject: "Probability Theorem and Mathematical Statistics",
-  semester: "Jun 2025",
+  semester: "2025 春",
   date: datetime.today(),
   maketitle: true,
   makeoutline: true,
@@ -23,6 +23,20 @@
   math: "New Computer Modern Math",
   math-cjk: "Noto Serif SC",
 )
+
+#heading(level: 1, numbering: none)[简介]
+
+这份笔记是本人在本学期学习概率论与数理统计做的一些归纳，内容整理自#link("https://blog.kisechan.space/2025/notes-ptms/")[这篇博客]，包括了概率论的基本概念、随机变量的分布、统计推断等方面的知识。
+
+概率论可以说是数学基础课中最简单的一门了，本人考前突击两天就拿了满绩。这课要记忆的东西不多，主要是一些公式和定理的应用。数理统计稍微多一些，涉及到统计方法和推断理论，但考的不多也不难，背下来基本概念和方法也就足够了。
+
+本笔记使用 #link("https://typst.app/")[Typst] 编写，使用 #link("https://typst.app/universe/package/ori")[ori]作为模板，笔记源代码可以在#link("https://github.com/Kisechan/Probability-Statistics-Notes")[这个 GitHub 仓库]得到，遵循#link("https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt")[CC BY-SA 4.0] 许可协议。
+
+#align(right)[
+  #datetime.today().display("[year]年[month]月")
+]
+
+#pagebreak()
 
 = 概率论
 
@@ -361,6 +375,7 @@ $
   $ (macron(X)_n dot~ cal(N)(mu, sigma^2/n)) $
 ]
 
+#pagebreak()
 = 数理统计
 
 == 正态总体
