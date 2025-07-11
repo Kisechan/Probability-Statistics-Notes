@@ -24,9 +24,11 @@
   math-cjk: "Noto Serif SC",
 )
 
-#heading(level: 1, numbering: none)[简介]
+#align(center)[
+  #heading(level: 1, numbering: none)[简介]
+]
 
-这份笔记是本人在本学期学习概率论与数理统计做的一些归纳，内容整理自#link("https://blog.kisechan.space/2025/notes-ptms/")[这篇博客]，包括了概率论的基本概念、随机变量的分布、统计推断等方面的知识。
+这份笔记是本人在本学期学习概率论与数理统计做的一些归纳，内容整理自#link("https://blog.kisechan.space/2025/notes-ptms/")[这篇博客]，包括了概率论的基本概念、随机变量的分布、统计推断等方面的知识。内容非常非常不规范不专业，仅适用于非数学专业帮助复习和考试使用。
 
 概率论可以说是数学基础课中最简单的一门了，本人考前突击两天就拿了满绩。这课要记忆的东西不多，主要是一些公式和定理的应用。数理统计稍微多一些，涉及到统计方法和推断理论，但考的不多也不难，背下来基本概念和方法也就足够了。
 
@@ -35,6 +37,51 @@
 #align(right)[
   #datetime.today().display("[year]年[month]月")
 ]
+
+#pagebreak()
+
+#align(center)[
+  #heading(level: 1, numbering: none)[符号对照表]
+]
+
+#figure(three-line-table[
+  | 符号 | 意义 |
+  | - | - |
+  | CDF | 概率分布函数 |
+  | PDF | 概率密度函数 |
+  | $bb(R)$ | 实数集 |
+  | $bb(N)$ | 自然数集 |
+  | $floor.l x floor.r$ | 向下取整 |
+  | $cal(N)(mu, sigma^2)$ | 正态分布 |
+  | $cal(N)(0, 1)$ | 标准正态分布 |
+  | $U(a, b)$ | 均匀分布 |
+  | $B(n, p)$ | 二项分布 |
+  | $pi(lambda)$ | 泊松分布 |
+  | $bb(E)X$ | 期望 |
+  | $"D"X$ | 方差 |
+  | $"Cov"(X, Y)$ | 协方差 |
+  | $rho_(X Y)$ | 相关系数 |
+  | $mu$ | 均值 |
+  | $sigma^2$ | 方差 |
+  | $sigma$ | 标准差 |
+  | $macron(X)_n$ | 样本均值 |
+  | $S^2$ | 样本方差 |
+  | $S$ | 样本标准差 |
+  | $hat(theta)$ | 估计量 |
+  | $chi^2(k)$ | $chi^2$ 分布 |
+  | $t(k)$ | $t$ 分布 |
+  | $F(d_1, d_2)$ | $F$ 分布 |
+  | $alpha$ | 显著性水平 |
+  | $beta$ | 第二类错误概率 |
+  | $H_0$ | 原假设 |
+  | $H_1$ | 备择假设 |
+  | $u_(alpha)$ | 标准正态分布分位点 |
+  | $chi^2_(alpha)(n-1)$ | $chi^2$ 分布 $alpha$ 分位点 |
+  | $t_(alpha)(n-1)$ | $t$ 分布 $alpha$ 分位点 |
+  | $F_(alpha)(d_1, d_2)$ | $F$ 分布 $alpha$ 分位点 |
+  | $~$ | 服从分布 |
+  | $dot ~$ | 近似服从分布 |
+]) <three-line-table>
 
 #pagebreak()
 
@@ -64,15 +111,15 @@
 
   // 指数分布
   [指数分布],
-  [$f(x) = lambda e^(-lambda x), x >= 0$],
-  [$F(x) = 1 - e^(-lambda x), x >= 0$],
+  [$f(x) = lambda "e"^(-lambda x), x >= 0$],
+  [$F(x) = 1 - "e"^(-lambda x), x >= 0$],
   [$1/lambda$],
   [$1/lambda^2$],
   [$lambda > 0$],
 
   // 正态分布
   [正态分布 $cal(N)(mu, sigma^2)$],
-  [$f(x) = 1/(sqrt(2 pi sigma^2)) e^(-((x - mu)^2)/(2 sigma^2))$],
+  [$f(x) = 1/(sqrt(2 pi sigma^2)) "e"^(-((x - mu)^2)/(2 sigma^2))$],
   [],
   [$mu$],
   [$sigma^2$],
@@ -95,7 +142,7 @@
   ),
 
   // 表头
-  [分布名称], [概率质量函数], [分布函数], [期望], [方差], [参数说明],
+  [分布名称], [概率密度函数], [分布函数], [期望], [方差], [参数说明],
 
   // 伯努利分布
   [伯努利分布],
@@ -130,7 +177,7 @@
 
   // 泊松分布
   [泊松分布 $pi(lambda)$],
-  [$P(X = k) = (lambda^k e^(-lambda))/(k!), k = 0,1,2,dots$],
+  [$P(X = k) = (lambda^k "e"^(-lambda))/(k!), k = 0,1,2,dots$],
   [],
   [$lambda$],
   [$lambda$],
@@ -138,11 +185,11 @@
 )
 
 #theorem(title: "二项分布的众数")[
-  二项分布的众数为 $floor.l (n+1) p floor.r$。
+  二项分布 $"B"(n, p)$ 的众数为 $floor.l (n+1) p floor.r$。
 ] <theorem>
 
 #theorem(title: "二项分布的极端情况")[
-  二项分布的极限情况就是泊松分布，此时，
+  二项分布 $"B"(n, p)$ 的极限情况就是泊松分布 $pi(lambda)$，此时，
 
   - $n arrow.r infinity$
   - $p arrow.r 0$
@@ -154,7 +201,7 @@
 
 #lemma(title: "Gauss 积分")[
   $
-    integral^(-infinity)_(+infinity) 1 / (sqrt(2 pi)) e^(-x^2/2) dif x = 1
+    integral^(-infinity)_(+infinity) 1 / (sqrt(2 pi)) "e"^(-x^2/2) dif x = 1
   $
 ] <lemma>
 
@@ -172,7 +219,7 @@
 
 标准正态分布的概率密度函数为：
 $
-  f(x) = 1 / (sqrt(2 pi)) e^(-x^2/2)
+  f(x) = 1 / (sqrt(2 pi)) "e"^(-x^2/2)
 $
 
 且，
@@ -212,17 +259,16 @@ $
   $
 
   $
-    f(x, y) = 1 / (2pi sigma_1 sigma_2 sqrt(1 - rho^2)) e^(-1/(2(1-rho^2)) ((x-mu_1)^2/sigma_1^2 + (y-mu_2)^2/sigma_2^2 - (2 rho (x-mu_1)(y-mu_2))/(sigma_1 sigma_2)))
+    f(x, y) = 1 / (2pi sigma_1 sigma_2 sqrt(1 - rho^2)) "e"^(-1/(2(1-rho^2)) ((x-mu_1)^2/sigma_1^2 + (y-mu_2)^2/sigma_2^2 - (2 rho (x-mu_1)(y-mu_2))/(sigma_1 sigma_2)))
   $
 ] <definition>
 
 #theorem(title: "正态分布的可加性")[
   正态分布满足*可加性*：
   $
-    X_i ~ cal(N)(mu_i, sigma_i^2)
+    X_i &~ cal(N)(mu_i, sigma_i^2)    \
+    sum c_i X_i &~ cal(N)(sum c_i mu_i, sum c_i^2 sigma_i^2)
   $
-
-  $sum c_i X_i ~ cal(N)(sum c_i mu_i, sum ($c_i^2$) sigma_i^2)$
 ] <theorem>
 
 == 二维随机变量函数的分布
@@ -236,8 +282,8 @@ $
     F_Z(z) = P(Z <= z) & = P(X + Y <= z)                                                                      \
                        & = integral.double_(x+y <= z) f(x,y) dif x dif y                                      \
                        & = integral_(-infinity)^(+infinity) [ integral_(-infinity)^(z-x) f(x,y) dif y ] dif x \
-                       & = (integral_(-infinity)^(+infinity) f(x, z-x) dif x)                                 \
-                       & = (integral_(-infinity)^(+infinity) f(z-y, y) dif y)
+                       & = integral_(-infinity)^(+infinity) f(x, z-x) dif x                                   \
+                       & = integral_(-infinity)^(+infinity) f(z-y, y) dif y
   $
 ]
 === $Z = max(X, Y)$ 和 $Z = min(X, Y)$ 型
@@ -267,12 +313,12 @@ $
 ] <theorem>
 
 #theorem(title: "随机变量函数的期望")[
-  #align()[
-    $
-      bb(E)(g(X)) & = sum g(x) times P { x = X_i } \
-                  & = integral g(x) f(x) dif x
-    $
-  ]
+  $
+    bb(E)(g(X)) = cases(
+      sum g(x_i) p_i & "，离散型随机变量",
+      integral_(-infinity)^(+infinity) g(x) f(x) dif x & "，连续型随机变量",
+    )
+  $
 ] <theorem>
 
 === $"D" X$
@@ -337,7 +383,7 @@ $
   $
     rho_(X Y) = plus.minus 1 =>
   $
-  + $exists a, b, " s.t. " Y = a X + b$
+  + $exists a, b, "使" Y = a X + b$
   + $sigma_Y / sigma_X = abs(a)$
   + $"D"(X|Y) = "D"(Y|X) = 0$
 
@@ -372,7 +418,7 @@ $
   $
   也就是说，不管 $X_i$ 服从什么分布，其样本均值的标准化形式 $Z_n$ 都近似服从标准正态分布，其非标准化形式满足：
 
-  $ (macron(X)_n dot~ cal(N)(mu, sigma^2/n)) $
+  $ macron(X)_n dot~ cal(N)(mu, sigma^2/n) $
 ]
 
 #pagebreak()
@@ -453,9 +499,9 @@ $
 $
 则，
 $
-  T & = (macron(X)_n - mu) / (S/sqrt(n))                                               \
-    & = (((X)n - mu) / (sigma/sqrt(n))) / (sqrt(S^2/sigma^2))                          \
-    & = (((macron(X)_n - mu)/(sigma/sqrt(n)))) / ((sqrt((chi^2(n-1))/(n-1)))) ~ t(n-1)
+  T & = (macron(X)_n - mu) / (S/sqrt(n))                                         \
+    & = (((X)n - mu) / (sigma/sqrt(n))) / (sqrt(S^2/sigma^2))                    \
+    & = ((macron(X)_n - mu)/sigma/sqrt(n)) / (sqrt((chi^2(n-1))/(n-1))) ~ t(n-1)
 $
 
 == $F$ 分布
@@ -525,7 +571,7 @@ $
 
 例如，均匀分布的观察值 $X_i$ 必须处在某个和 $theta$ 相关的区间内时，会涉及到这种情况。
 
-== 估计量评选标准
+== 估计量的评选标准
 
 === 无偏性
 
@@ -604,7 +650,7 @@ $
     bottom: none,
     left: none,
     right: none,
-    ),
+  ),
   [], [*$H_0$ 为真*], [*$H_0$ 为假*],
   [*接受*], [正确], [第二类错误],
   [*拒绝*], [第一类错误], [正确],
@@ -614,8 +660,8 @@ $
 
 + *提出假设*：$H_0: mu = mu_0$，$H_1: mu != mu_0$。
 + *选择检验统计量*：
-  - *方差已知*：选 $((macron(X) - mu_0)/(sigma/sqrt(n))) ~ cal(N)(0,1)$，进行 *U 检验*。
-  - *方差未知*：选 $((macron(X) - mu_0)/(S/sqrt(n))) ~ t(n-1)$，进行 *T 检验*。
+  - *方差已知*：选 $(macron(X) - mu_0)/(sigma/sqrt(n)) ~ cal(N)(0,1)$，进行 *U 检验*。
+  - *方差未知*：选 $(macron(X) - mu_0)/(S/sqrt(n)) ~ t(n-1)$，进行 *T 检验*。
 + *根据显著性水平 $alpha$ 求出拒绝域*：
   - *U 检验*：拒绝域 $W = (-infinity, -u_(alpha/2)) union (u_(alpha/2), +infinity)$。
   - *T 检验*：拒绝域 $W = (-infinity, -t_(alpha/2)(n-1)) union (t_(alpha/2)(n-1), +infinity)$。
@@ -624,6 +670,6 @@ $
 === 检验 $sigma^2$
 
 + *提出假设*：$H_0: sigma^2 = sigma_0^2$，$H_1: sigma^2 != sigma_0^2$。
-+ *选择检验统计量*：$(((n-1)S^2)/sigma_0^2) ~ chi^2(n-1)$，进行 *$chi^2$ 检验*。
++ *选择检验统计量*：$((n-1)S^2)/sigma_0^2 ~ chi^2(n-1)$，进行 *$chi^2$ 检验*。
 + *求拒绝域*：$W = (0, chi^2_(1-alpha/2)(n-1)) union (chi^2_(alpha/2)(n-1), +infinity)$。
 + *做出检验*：将样本值代入检验统计量，若结果落在拒绝域 $W$ 内，则拒绝 $H_0$；否则接受 $H_0$。
