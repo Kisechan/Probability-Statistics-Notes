@@ -2,6 +2,15 @@
 
 #set heading(numbering: numbly("{1:一}、", default: "1.1  "))
 
+#let font = (
+  main: "IBM Plex Serif",
+  mono: "IBM Plex Mono",
+  cjk: "Source Han Serif SC",
+  emph-cjk: "Source Han Serif SC",
+  math: "New Computer Modern Math",
+  math-cjk: "Source Han Serif SC",
+)
+
 #show: ori.with(
   title: "概率论与数理统计",
   author: "Kisechan",
@@ -11,31 +20,27 @@
   maketitle: true,
   makeoutline: true,
   first-line-indent: auto,
+  font: font,
   // theme: "dark",
   // media: "screen",
-)
-
-#let font = (
-  main: "IBM Plex Serif",
-  mono: "IBM Plex Mono",
-  cjk: "Noto Serif SC",
-  emph-cjk: "KaiTi",
-  math: "New Computer Modern Math",
-  math-cjk: "Noto Serif SC",
 )
 
 #align(center)[
   #heading(level: 1, numbering: none)[简介]
 ]
 
-这份笔记是本人在本学期学习概率论与数理统计做的一些归纳，内容整理自#link("https://blog.kisechan.space/2025/notes-ptms/")[这篇博客]，包括了概率论的基本概念、随机变量的分布、统计推断等方面的知识。内容非常非常不规范不专业，仅适用于非数学专业帮助复习和考试使用。
+这份笔记是本人在本学期学习概率论与数理统计做的一些归纳，同时作为 Typst 排版的练习，内容整理自#link("https://blog.kisechan.space/2025/notes-ptms/")[这篇博客]，包括了概率论的基本概念、随机变量的分布、统计推断等方面的知识，非常非常不规范不专业，仅适用于非数学专业帮助复习和考试使用。
 
-概率论可以说是数学基础课中最简单的一门了，本人考前突击两天就拿了满绩。这课要记忆的东西不多，主要是一些公式和定理的应用。数理统计稍微多一些，涉及到统计方法和推断理论，但考的不多也不难，背下来基本概念和方法也就足够了。
+概率论可以说是数学基础课中最简单的一门，本人考前突击两天就拿了满绩。这课主要考的是前半部分概率论的内容，把这部分的题多做一些就能拿到相当多的分。数理统计部分要记的新概念稍微多一些，但考的不多也不难，背下来概念和解题方法也就足够了。假设检验完全没有考过大题。
 
-本笔记使用 #link("https://typst.app/")[Typst] 编写，使用 #link("https://typst.app/universe/package/ori")[ori]作为模板，笔记源代码可以在#link("https://github.com/Kisechan/Probability-Statistics-Notes")[这个 GitHub 仓库]得到，遵循#link("https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt")[CC BY-SA 4.0] 许可协议。
+本笔记使用 #link("https://typst.app/")[Typst] 编写，基于模板 #link("https://typst.app/universe/package/ori")[ori]（作者：OrangeX4）进行排版，使用 Source Han Serif SC 和 IBM Plex 字体，感谢这些开源贡献者！笔记源代码可以在#link("https://github.com/Kisechan/Probability-Statistics-Notes")[这个 GitHub 仓库]得到，遵循#link("https://creativecommons.org/licenses/by-sa/4.0/legalcode.txt")[CC BY-SA 4.0] 许可协议。
 
 #align(right)[
-  #datetime.today().display("[year]年[month]月")
+  Kisechan\
+  #link("github.com/Kisechan")\
+  #link("mailto:admin@kisechan.space")\
+  #datetime.today().display("[year]年[month]月[day]日")\
+  笔记版本 v1.2
 ]
 
 #pagebreak()
@@ -67,10 +72,10 @@
   | $macron(X)_n$ | 样本均值 |
   | $S^2$ | 样本方差 |
   | $S$ | 样本标准差 |
-  | $hat(theta)$ | 估计量 |
-  | $chi^2(k)$ | $chi^2$ 分布 |
-  | $t(k)$ | $t$ 分布 |
-  | $F(d_1, d_2)$ | $F$ 分布 |
+  | $hat(theta)$ | $theta$ 的估计量 |
+  | $chi^2(k)$ | 自由度为 $k$ 的 $chi^2$ 分布 |
+  | $t(k)$ | 自由度为 $k$ 的 $t$ 分布 |
+  | $F(d_1, d_2)$ | 自由度为 $d_1$ 和 $d_2$ 的 $F$ 分布 |
   | $alpha$ | 显著性水平 |
   | $beta$ | 第二类错误概率 |
   | $H_0$ | 原假设 |
@@ -99,7 +104,7 @@
   ),
 
   // 表头
-  [分布名称], [概率密度函数], [分布函数], [期望], [方差], [参数说明],
+  [分布名称], [概率密度函数], [概率分布函数], [期望], [方差], [参数说明],
 
   // 均匀分布
   [均匀分布 $U(a, b)$],
@@ -142,7 +147,7 @@
   ),
 
   // 表头
-  [分布名称], [概率密度函数], [分布函数], [期望], [方差], [参数说明],
+  [分布名称], [概率密度函数], [概率分布函数], [期望], [方差], [参数说明],
 
   // 伯努利分布
   [伯努利分布],
@@ -259,15 +264,15 @@ $
   $
 
   $
-    f(x, y) = 1 / (2pi sigma_1 sigma_2 sqrt(1 - rho^2)) "e"^(-1/(2(1-rho^2)) ((x-mu_1)^2/sigma_1^2 + (y-mu_2)^2/sigma_2^2 - (2 rho (x-mu_1)(y-mu_2))/(sigma_1 sigma_2)))
+    f(x, y) = 1 / (2pi sigma_1 sigma_2 sqrt(1 - rho^2)) exp (-1/(2(1-rho^2)) ((x-mu_1)^2/sigma_1^2 + (y-mu_2)^2/sigma_2^2 - (2 rho (x-mu_1)(y-mu_2))/(sigma_1 sigma_2)))
   $
 ] <definition>
 
 #theorem(title: "正态分布的可加性")[
   正态分布满足*可加性*：
   $
-    X_i &~ cal(N)(mu_i, sigma_i^2)    \
-    sum c_i X_i &~ cal(N)(sum c_i mu_i, sum c_i^2 sigma_i^2)
+            X_i & ~ cal(N)(mu_i, sigma_i^2)                   \
+    sum c_i X_i & ~ cal(N)(sum c_i mu_i, sum c_i^2 sigma_i^2)
   $
 ] <theorem>
 
@@ -280,7 +285,7 @@ $
 #align(center)[
   $
     F_Z(z) = P(Z <= z) & = P(X + Y <= z)                                                                      \
-                       & = integral.double_(x+y <= z) f(x,y) dif x dif y                                      \
+                       & = limits(integral.double)_(x+y <= z) f(x,y) dif x dif y                              \
                        & = integral_(-infinity)^(+infinity) [ integral_(-infinity)^(z-x) f(x,y) dif y ] dif x \
                        & = integral_(-infinity)^(+infinity) f(x, z-x) dif x                                   \
                        & = integral_(-infinity)^(+infinity) f(z-y, y) dif y
@@ -290,11 +295,11 @@ $
 
 *独立同分布*，则有
 $
-  F_max (z) = P(Z <= z) = P(X <= z) P(Y <= z) = (F_X (z) F_Y (z) = F(z)^2)
+  F_max (z) = P(Z <= z) = P(X <= z) P(Y <= z) = F_X (z) F_Y (z) = F(z)^2
 $
 
 $
-  F_min (z) = 1 - P(Z > z) = 1 - P(X > z) P(Y > z) = (1 - [1 - F_X (z)][1 - F_Y (z)] = 1 - [1-F(z)]^2)
+  F_min (z) = 1 - P(Z > z) = 1 - P(X > z) P(Y > z) = 1 - [1 - F_X (z)][1 - F_Y (z)] = 1 - [1-F(z)]^2
 $
 
 == 随机变量的数字特征
@@ -414,7 +419,7 @@ $
 #theorem(title: "中心极限定理")[
   记 $macron(X)_n$ 为样本均值，$Z_n$ 为其标准化形式。
   $
-    Z_n = (macron(X)_n - bb(E)[macron(X)_n]) / ("D"[macron(X)_n]) = (macron(X)_n - mu) / (sigma / sqrt(n)) ~ cal(N)(0, 1)
+    Z_n = (macron(X)_n - bb(E)macron(X)_n) / ("D"macron(X)_n) = (macron(X)_n - mu) / (sigma \/ sqrt(n)) ~ cal(N)(0, 1)
   $
   也就是说，不管 $X_i$ 服从什么分布，其样本均值的标准化形式 $Z_n$ 都近似服从标准正态分布，其非标准化形式满足：
 
@@ -481,7 +486,7 @@ $
 
   则，
   $
-    T = Z / sqrt(U/k) ~ t(k)
+    T = Z / sqrt(U\/k) ~ t(k)
   $
 ] <definition>
 
@@ -494,14 +499,14 @@ $k -> +infinity$ 时，$t$ 分布收敛于 $cal(N)(0,1)$。
 
 对于从正态总体中抽取的样本 $X_i$，有
 $
-  (macron(X)_n - mu)/(sigma / sqrt(n)) ~ cal(N)(0,1) \
+  (macron(X)_n - mu)/(sigma \/ sqrt(n)) ~ cal(N)(0,1) \
   ((n-1)S^2)/sigma^2 ~ chi^2(n-1)
 $
 则，
 $
-  T & = (macron(X)_n - mu) / (S/sqrt(n))                                         \
-    & = (((X)n - mu) / (sigma/sqrt(n))) / (sqrt(S^2/sigma^2))                    \
-    & = ((macron(X)_n - mu)/sigma/sqrt(n)) / (sqrt((chi^2(n-1))/(n-1))) ~ t(n-1)
+  T & = (macron(X)_n - mu) / (S\/sqrt(n))                                          \
+    & = (((X)n - mu) / (sigma\/sqrt(n))) / (sqrt(S^2\/sigma^2))                    \
+    & = ((macron(X)_n - mu)/sigma\/sqrt(n)) / (sqrt((chi^2(n-1))\/(n-1))) ~ t(n-1)
 $
 
 == $F$ 分布
@@ -518,7 +523,7 @@ $
 
   则，
   $
-    F = (U/d_1)/(V/d_2) ~ F(d_1, d_2)
+    F = (U\/d_1)/(V\/d_2) ~ F(d_1, d_2)
   $
   且，
   $
@@ -608,11 +613,11 @@ $
 
 === 求 $mu$
 
-- *若方差已知*，置信水平为 $1-alpha$ 时，枢轴量 $(macron(X) - mu)/(sigma / sqrt(n)) ~ cal(N)(0,1)$ 的值需要在 $(-u_(alpha/2), u_(alpha/2))$ 区间内。解出 $mu$ 的置信区间为：
+- *若方差已知*，置信水平为 $1-alpha$ 时，枢轴量 $(macron(X) - mu)/(sigma \/ sqrt(n)) ~ cal(N)(0,1)$ 的值需要在 $(-u_(alpha/2), u_(alpha/2))$ 区间内。解出 $mu$ 的置信区间为：
   $
     mu in (macron(X) plus.minus u_(alpha/2) sigma/sqrt(n))
   $
-- *若方差未知*，置信水平为 $1-alpha$ 时，枢轴量 $(macron(X) - mu)/(S / sqrt(n)) ~ t(n-1)$ 的值需要在 $(-t_(alpha/2)(n-1), t_(alpha/2)(n-1))$ 区间内。解出 $mu$ 的置信区间为：
+- *若方差未知*，置信水平为 $1-alpha$ 时，枢轴量 $(macron(X) - mu)/(S \/ sqrt(n)) ~ t(n-1)$ 的值需要在 $(-t_(alpha/2)(n-1), t_(alpha/2)(n-1))$ 区间内。解出 $mu$ 的置信区间为：
   $
     mu in (macron(X) plus.minus t_(alpha/2)(n-1) S/sqrt(n))
   $
@@ -660,8 +665,8 @@ $
 
 + *提出假设*：$H_0: mu = mu_0$，$H_1: mu != mu_0$。
 + *选择检验统计量*：
-  - *方差已知*：选 $(macron(X) - mu_0)/(sigma/sqrt(n)) ~ cal(N)(0,1)$，进行 *U 检验*。
-  - *方差未知*：选 $(macron(X) - mu_0)/(S/sqrt(n)) ~ t(n-1)$，进行 *T 检验*。
+  - *方差已知*：选 $(macron(X) - mu_0)/(sigma\/sqrt(n)) ~ cal(N)(0,1)$，进行 *U 检验*。
+  - *方差未知*：选 $(macron(X) - mu_0)/(S\/sqrt(n)) ~ t(n-1)$，进行 *T 检验*。
 + *根据显著性水平 $alpha$ 求出拒绝域*：
   - *U 检验*：拒绝域 $W = (-infinity, -u_(alpha/2)) union (u_(alpha/2), +infinity)$。
   - *T 检验*：拒绝域 $W = (-infinity, -t_(alpha/2)(n-1)) union (t_(alpha/2)(n-1), +infinity)$。
