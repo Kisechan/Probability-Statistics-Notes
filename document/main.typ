@@ -21,6 +21,8 @@
   makeoutline: true,
   first-line-indent: auto,
   font: font,
+  outline-depth: 3,
+  // size: 12pt,
   // theme: "dark",
   // media: "screen",
 )
@@ -40,7 +42,7 @@
   #link("github.com/Kisechan")\
   #link("mailto:admin@kisechan.space")\
   #datetime.today().display("[year]年[month]月[day]日")\
-  笔记版本 v1.2
+  笔记版本 v1.3
 ]
 
 #pagebreak()
@@ -447,7 +449,9 @@ $
   + $S^2$ 和 $macron(X)$ 是*相互独立的*。
 ]
 
-== $chi^2$ 分布
+== 统计量的 $chi^2$ 分布，$t$ 分布和 $F$ 分布
+
+=== $chi^2$ 分布
 
 #figure(image("assets/chi-square.svg", width: 20em), caption: [
   $chi^2$ 分布 #link("https://en.wikipedia.org/wiki/Chi-squared_distribution")[来源 Wikipedia]
@@ -472,7 +476,7 @@ $
   $
 ] <theorem>
 
-== $t$ 分布
+=== $t$ 分布
 
 #figure(image("assets/student_t.svg", width: 20em), caption: [
   $t$ 分布 #link("https://en.wikipedia.org/wiki/Student%27s_t-distribution")[来源 Wikipedia]
@@ -509,7 +513,7 @@ $
     & = ((macron(X)_n - mu)/sigma\/sqrt(n)) / (sqrt((chi^2(n-1))\/(n-1))) ~ t(n-1)
 $
 
-== $F$ 分布
+=== $F$ 分布
 
 #figure(image("assets/f-distribution.svg", width: 20em), caption: [
   $F$ 分布 #link("https://en.wikipedia.org/wiki/F-distribution")[来源 Wikipedia]
@@ -596,8 +600,7 @@ $
 $
 则称 $hat(theta)_i$ 比 $hat(theta)_j$ 更有效。
 
-// == 一致性 ==
-== 一致性
+=== 一致性
 
 当 $n -> +infinity$ 时，估计量 $hat(theta)_n$ 依概率收敛于 $theta$，即
 $
